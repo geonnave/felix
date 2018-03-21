@@ -4,10 +4,16 @@ defmodule HandlerTest do
 
   test "parse well-formed requests" do
     request = "GET /value HTTP/1.1"
-    assert %{method: "GET", path: "/value"} = Handler.parse(request)
+    assert %{method: "GET", path: ["value"]} = Handler.parse(request)
 
     request = "GET /value HTTP/1.1\r\nAccpet: application/json\r\n\r\n"
-    assert %{method: "GET", path: "/value"} = Handler.parse(request)
+    assert %{method: "GET", path: ["value"]} = Handler.parse(request)
+
+    request = "GET //value HTTP/1.1"
+    assert %{method: "GET", path: ["value"]} = Handler.parse(request)
+
+    request = "GET /items/1 HTTP/1.1"
+    assert %{method: "GET", path: ["items", "1"]} = Handler.parse(request)
   end
 
   test "raise on badly-formed requests" do

@@ -10,6 +10,8 @@ defmodule ElixServer do
     loop_acceptor(socket)
   end
 
+  # TODO: make handler configurable, depending on mix env
+  # # this change involve understanding configuration (and dependency injection)
   def loop_acceptor(socket) do
     {:ok, client} = :gen_tcp.accept(socket)
 

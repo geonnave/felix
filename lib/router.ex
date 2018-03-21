@@ -4,15 +4,18 @@ defmodule Router do
     match(method, path, context)
   end
 
-  def match("GET", "/value", context) do
+  # TODO: implement sample model, view, and controller
+  # TODO: the model could be a process
+  # # these changes involve project structure understanding and good practices
+  def match("GET", ["value"], context) do
     context
     |> put_in([:resp_body], "{\"value\": 42}")
     |> put_in([:content_type], "application/json")
     |> put_in([:status], "200 Ok")
   end
-  def match("GET", "/hello", context) do
+  def match("GET", ["hello", name], context) do
     context
-    |> put_in([:resp_body], "<h1>World</h1>")
+    |> put_in([:resp_body], "<h1>Hello #{String.upcase(name)}</h1>")
     |> put_in([:content_type], "text/html")
     |> put_in([:status], "200 Ok")
   end
