@@ -6,7 +6,7 @@ defmodule Router do
 
   # TODO: implement sample model, view, and controller
   # TODO: the model could be a process
-  # # these changes involve project structure understanding and good practices
+  # # these changes involve understanding of project structure and good practices
   def match("GET", ["value"], context) do
     context
     |> put_in([:resp_body], "{\"value\": 42}")
