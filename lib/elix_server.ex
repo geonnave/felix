@@ -32,5 +32,6 @@ defmodule ElixServer do
     :gen_tcp.send(client, response)
     :gen_tcp.close(client)
   end
+
 end
 
