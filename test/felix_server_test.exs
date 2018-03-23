@@ -1,6 +1,6 @@
-defmodule ElixServerTest do
+defmodule FelixTest do
   use ExUnit.Case
-  doctest ElixServer
+  doctest Felix
   # TODO: add tests
   # # this change involves dependency injection
 end

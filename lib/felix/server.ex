@@ -1,4 +1,4 @@
-defmodule ElixServer do
+defmodule Felix.Server do
   require Logger
 
   @tcp_options [:binary, active: false, reuseaddr: true]
@@ -11,8 +11,6 @@ defmodule ElixServer do
     loop_acceptor(socket)
   end
 
-  # TODO: make handler configurable, depending on mix env
-  # # this change involve understanding configuration (and dependency injection)
   def loop_acceptor(socket) do
     {:ok, client} = :gen_tcp.accept(socket)
 
@@ -20,7 +18,7 @@ defmodule ElixServer do
     # TODO: then make it part of a supervision tree
     client
     |> receive_request()
-    |> Handler.handle()
+    |> Felix.Handler.handle()
     |> send_response(client)
 
     loop_acceptor(socket)

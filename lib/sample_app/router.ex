@@ -1,4 +1,4 @@
-defmodule Router do
+defmodule SampleApp.Router do
 
   def call(context = %{method: method, path: path}) do
     match(method, path, context)

@@ -1,4 +1,4 @@
-defmodule Parser do
+defmodule Felix.HTTPParser do
   defmodule RequestFormatError do
     defexception [:message]
   end
