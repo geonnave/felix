@@ -1,12 +1,13 @@
 defmodule Handler do
   require Logger
 
-  # TODO: pass router_module as parameter
-  # # this change involves dependency injection
   def handle(request) do
-    request
-    |> Parser.parse()
-    |> Router.route()
+    context = request |> Parser.parse()
+
+    Endpoint.pipeline()
+    |> Enum.reduce(context, fn pipe_stage, new_context ->
+      apply(pipe_stage, :call, [new_context])
+    end)
     |> build_resp()
   end
 

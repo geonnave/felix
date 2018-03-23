@@ -3,6 +3,7 @@ defmodule ElixServer do
 
   @tcp_options [:binary, active: false, reuseaddr: true]
 
+  # TODO: make this part of a supervision tree
   def start(port \\ 2222) do
     {:ok, socket} = :gen_tcp.listen(port, @tcp_options)
 
@@ -15,6 +16,8 @@ defmodule ElixServer do
   def loop_acceptor(socket) do
     {:ok, client} = :gen_tcp.accept(socket)
 
+    # TODO: make this run in own process
+    # TODO: then make it part of a supervision tree
     client
     |> receive_request()
     |> Handler.handle()

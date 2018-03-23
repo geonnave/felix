@@ -1,6 +1,6 @@
 defmodule Router do
 
-  def route(context = %{method: method, path: path}) do
+  def call(context = %{method: method, path: path}) do
     match(method, path, context)
   end
 
