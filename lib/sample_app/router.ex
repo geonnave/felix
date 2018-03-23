@@ -1,8 +1,5 @@
 defmodule SampleApp.Router do
-
-  def call(context = %{method: method, path: path}) do
-    match(method, path, context)
-  end
+  use Felix.Router
 
   # TODO: implement sample model, view, and controller
   # TODO: the model could be a process
