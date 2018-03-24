@@ -14,12 +14,13 @@ defmodule Felix.Server do
   def loop_acceptor(socket) do
     {:ok, client} = :gen_tcp.accept(socket)
 
-    # TODO: make this run in own process
-    # TODO: then make it part of a supervision tree
-    client
-    |> receive_request()
-    |> Felix.Handler.handle()
-    |> send_response(client)
+    # TODO: make it part of a supervision tree
+    spawn(fn ->
+      client
+      |> receive_request()
+      |> Felix.Handler.handle()
+      |> send_response(client)
+    end)
 
     loop_acceptor(socket)
   end
