@@ -7,7 +7,6 @@ defmodule FelixHTTPSerializerTest do
   test "build http response" do
     response = """
     HTTP/1.1 200 Ok\r
-    Content-type: text/plain\r
     \r
     hola que tal
     """
