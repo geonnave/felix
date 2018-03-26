@@ -5,13 +5,13 @@ defmodule FelixHandlerTest do
   alias Felix.Handler
 
   defmodule TestApp.Endpoint do
+    use Felix.Endpoint
     def pipeline do
       [TestApp.Router]
     end
   end
   defmodule TestApp.Router do
     use Felix.Router
-
     def match("GET", ["value"], context) do
       context
       |> put_in([:resp_body], "hola que tal")

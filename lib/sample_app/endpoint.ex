@@ -3,6 +3,8 @@ defmodule SampleApp.Endpoint do
   This is the first module touched by the application developer.
   """
 
+  use Felix.Endpoint
+
   @doc """
   Returns an ordered list of stages through which a context will be processed.
 
