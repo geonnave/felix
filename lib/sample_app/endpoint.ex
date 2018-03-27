@@ -6,7 +6,7 @@ defmodule SampleApp.Endpoint do
   use Felix.Endpoint
 
   @doc """
-  Returns an ordered list of stages through which a context will be processed.
+  Returns an ordered list of stages through which a connection will be processed.
 
   Edit this function at will, adding your own pipe stages.
   """

@@ -11,8 +11,8 @@ defmodule FelixHTTPSerializerTest do
     hola que tal
     """
 
-    context = %{status: "200 Ok", resp_body: "hola que tal"}
-    assert ^response = HTTPSerializer.serialize(context)
+    connection = %{status: "200 Ok", resp_body: "hola que tal"}
+    assert ^response = HTTPSerializer.serialize(connection)
   end
 
 end

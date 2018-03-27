@@ -4,10 +4,10 @@ defmodule Felix.Endpoint do
       @doc """
       Run all stages defined in the `pipeline/0` function.
       """
-      def call(context) do
+      def call(connection) do
         pipeline()
-        |> Enum.reduce(context, fn pipe_stage, new_context ->
-          apply(pipe_stage, :call, [new_context])
+        |> Enum.reduce(connection, fn pipe_stage, new_connection ->
+          apply(pipe_stage, :call, [new_connection])
         end)
       end
     end

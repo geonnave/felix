@@ -12,13 +12,13 @@ defmodule FelixHandlerTest do
   end
   defmodule TestApp.Router do
     use Felix.Router
-    def match("GET", ["value"], context) do
-      context
+    def match("GET", ["value"], connection) do
+      connection
       |> put_in([:resp_body], "hola que tal")
       |> put_in([:status], "200 Ok")
     end
-    def match(method, path, context) do
-      context
+    def match(method, path, connection) do
+      connection
       |> put_in([:resp_body], "#{method} #{path} not found")
       |> put_in([:status], "404 Not Found")
     end
