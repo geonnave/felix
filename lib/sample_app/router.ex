@@ -7,12 +7,9 @@ defmodule SampleApp.Router do
   # TODO: the model could be a process
   # # these changes involve understanding of project structure and good practices
   def match("GET", ["value"], connection) do
-    %Connection{connection |
-      resp_body: "{\"value\": 42}",
-      resp_headers: [{"content-type", "application/json"}],
-      status: "200 Ok",
-    }
+    SampleApp.ValueController.show(connection, [])
   end
+
   def match("GET", ["hello", name], connection) do
     %Connection{connection |
       resp_body: "<h1>Hello #{String.upcase(name)}</h1>",
@@ -20,6 +17,7 @@ defmodule SampleApp.Router do
       status: "200 Ok",
     }
   end
+
   def match(method, path, connection) do
     %Connection{connection |
       resp_body: "#{method} #{path} not found",
