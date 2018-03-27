@@ -2,25 +2,25 @@ defmodule FelixHTTPParserTest do
   use ExUnit.Case
   doctest Felix
 
-  alias Felix.HTTPParser
+  alias Felix.{HTTPParser, Connection}
 
   test "parse well-formed requests" do
     request = "GET /value HTTP/1.1\r\n\r\n"
-    assert %{method: "GET", path: ["value"]} = HTTPParser.parse(request)
+    assert %Connection{method: "GET", path_info: ["value"]} = HTTPParser.parse(request)
 
     request = "GET /value HTTP/1.1\r\nAccpet: application/json\r\n\r\n"
-    assert %{method: "GET", path: ["value"]} = HTTPParser.parse(request)
+    assert %Connection{method: "GET", path_info: ["value"]} = HTTPParser.parse(request)
   end
 
   test "parse well-formed requests into lists" do
     request = "GET / HTTP/1.1\r\n\r\n"
-    assert %{method: "GET", path: []} = HTTPParser.parse(request)
+    assert %Connection{method: "GET", path_info: []} = HTTPParser.parse(request)
 
     request = "GET //value HTTP/1.1\r\n\r\n"
-    assert %{method: "GET", path: ["value"]} = HTTPParser.parse(request)
+    assert %Connection{method: "GET", path_info: ["value"]} = HTTPParser.parse(request)
 
     request = "GET /items/1 HTTP/1.1\r\n\r\n"
-    assert %{method: "GET", path: ["items", "1"]} = HTTPParser.parse(request)
+    assert %Connection{method: "GET", path_info: ["items", "1"]} = HTTPParser.parse(request)
   end
 
   test "parse well-formed requests with headers" do
@@ -29,7 +29,7 @@ defmodule FelixHTTPParserTest do
     Location: localhost:2222\r
     \r
     """
-    assert %{request_headers: [{"Location", "localhost:2222"}]} = HTTPParser.parse(request)
+    assert %Connection{req_headers: [{"Location", "localhost:2222"}]} = HTTPParser.parse(request)
 
     request = """
     GET / HTTP/1.1\r
@@ -37,7 +37,7 @@ defmodule FelixHTTPParserTest do
     Accept: text/html\r
     \r
     """
-    assert %{request_headers: headers} = HTTPParser.parse(request)
+    assert %Connection{req_headers: headers} = HTTPParser.parse(request)
     assert {"Location", "localhost:2222"} in headers
     assert {"Accept", "text/html"} in headers
 
@@ -48,7 +48,7 @@ defmodule FelixHTTPParserTest do
     \r
     {"value": 3.14}
     """
-    assert %{request_headers: headers, payload: "{\"value\": 3.14}\n"} = HTTPParser.parse(request)
+    assert %Connection{req_headers: headers, req_body: "{\"value\": 3.14}\n"} = HTTPParser.parse(request)
     assert length(headers) == 2
   end
 
@@ -64,7 +64,7 @@ defmodule FelixHTTPParserTest do
     end
   end
 
-  test "parse headers and payload" do
+  test "parse headers and body" do
     headers = "Location: localhost:2222\r\n\r\n"
     assert {headers, nil} = HTTPParser.parse_headers_and_payload(headers)
     assert {"Location", "localhost:2222"} in headers

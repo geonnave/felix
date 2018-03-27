@@ -2,7 +2,7 @@ defmodule FelixHandlerTest do
   use ExUnit.Case
   doctest Felix
 
-  alias Felix.Handler
+  alias Felix.{Handler, Connection}
 
   defmodule TestApp.Endpoint do
     use Felix.Endpoint
@@ -13,14 +13,10 @@ defmodule FelixHandlerTest do
   defmodule TestApp.Router do
     use Felix.Router
     def match("GET", ["value"], connection) do
-      connection
-      |> put_in([:resp_body], "hola que tal")
-      |> put_in([:status], "200 Ok")
+      %Connection{connection | resp_body: "hola que tal", status: "200 Ok"}
     end
     def match(method, path, connection) do
-      connection
-      |> put_in([:resp_body], "#{method} #{path} not found")
-      |> put_in([:status], "404 Not Found")
+      %Connection{connection | resp_body: "#{method} #{path} not found", status: "404 Not Found"}
     end
   end
 

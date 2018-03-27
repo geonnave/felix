@@ -1,6 +1,15 @@
 defmodule Felix.Stages.Logger do
-  def call(connection = %{request_id: rid, method: m, path: p}) do
-    IO.puts("[#{rid}] #{m} at #{inspect(p)}")
+  alias Felix.Connection
+  require Logger
+
+  def call(connection = %Connection{assigns: assigns, method: m, path_info: p}) do
+    case assigns do
+      %{request_id: rid} ->
+        Logger.info("[#{rid}] #{m} at #{inspect(p)}")
+      _ ->
+        Logger.info("#{m} at #{inspect(p)}")
+    end
+
     connection
   end
 end

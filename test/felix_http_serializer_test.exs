@@ -2,7 +2,7 @@ defmodule FelixHTTPSerializerTest do
   use ExUnit.Case
   doctest Felix
 
-  alias Felix.HTTPSerializer
+  alias Felix.{HTTPSerializer, Connection}
 
   test "build http response" do
     response = """
@@ -11,7 +11,7 @@ defmodule FelixHTTPSerializerTest do
     hola que tal
     """
 
-    connection = %{status: "200 Ok", resp_body: "hola que tal"}
+    connection = %Connection{status: "200 Ok", resp_body: "hola que tal"}
     assert ^response = HTTPSerializer.serialize(connection)
   end
 

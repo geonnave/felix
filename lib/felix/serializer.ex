@@ -2,9 +2,9 @@ defmodule Felix.HTTPSerializer do
 
   def serialize(connection) do
     """
-    HTTP/1.1 #{connection[:status] || "422 Unprocessable Entity"}\r
-    #{serialize_headers(connection[:headers])}\r
-    #{connection[:resp_body]}
+    HTTP/1.1 #{connection.status || "422 Unprocessable Entity"}\r
+    #{serialize_headers(connection.resp_headers)}\r
+    #{connection.resp_body}
     """
   end
 

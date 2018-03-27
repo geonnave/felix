@@ -3,6 +3,8 @@ defmodule Felix.HTTPParser do
     defexception [:message]
   end
 
+  alias Felix.Connection
+
   @allowed_methods ~w(GET POST PUT DELETE OPTIONS)
 
   def parse(request) do
@@ -10,11 +12,11 @@ defmodule Felix.HTTPParser do
       [method, path, "HTTP/1.1\r\n" <> rest] when method in @allowed_methods ->
         {headers, payload} = parse_headers_and_payload(rest)
 
-        %{
+        %Connection{
           method: method,
-          path: parse_path(path),
-          request_headers: headers,
-          payload: payload
+          path_info: parse_path(path),
+          req_headers: headers,
+          req_body: payload
         }
       _ ->
         raise RequestFormatError, message: "invalid request format: #{inspect(request)}"
