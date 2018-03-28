@@ -1,23 +1,26 @@
 defmodule SampleApp.ValueController do
   alias Felix.Connection
 
-  def show(connection, _params) do
-    send SampleApp.ValueModel, {:get_value, self()}
+  def index(connection, _params) do
+    send SampleApp.ValueModel, {:get_cars, self()}
 
     receive do
-      value ->
+      {:cars, cars} ->
         %Connection{connection |
-          resp_body: "{\"value\": #{value}}",
+          resp_body: "#{inspect(cars)}",
           resp_headers: [{"content-type", "application/json"}],
           status: "200 Ok",
         }
-    after 500 ->
-      %Connection{connection |
-        resp_body: "internal error",
-        resp_headers: [{"content-type", "text/plain"}],
-        status: "500 Internal Server Error",
-      }
     end
+  end
+
+  def create(connection, _params) do
+    car = String.trim(connection.req_body)
+    send SampleApp.ValueModel, {:add_car, car}
+
+    %Connection{connection |
+      status: "201 Created",
+    }
   end
 end
 

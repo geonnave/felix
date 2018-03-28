@@ -8,7 +8,7 @@ defmodule Felix.Server do
     {:ok, socket} = :gen_tcp.listen(port, @tcp_options)
 
     Logger.info("Accepting connections on port #{port}")
-    loop_acceptor(socket)
+    spawn(fn -> loop_acceptor(socket) end)
   end
 
   def loop_acceptor(socket) do

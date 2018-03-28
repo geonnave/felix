@@ -1,18 +1,19 @@
 defmodule SampleApp.ValueModel do
   def start do
-    spawn(&loop/0) |> Process.register(__MODULE__)
+    cars = ["Model S", "Model X", "Model 3"]
+
+    spawn(fn -> loop(cars) end) |> Process.register(__MODULE__)
   end
 
-  def loop do
+  def loop(cars) do
     receive do
-      {:get_value, caller} ->
-        answer = calculate_answer()
-        send caller, answer
-        loop()
+      {:get_cars, caller} ->
+        send(caller, {:cars, cars})
+        loop(cars)
+      {:add_car, car} ->
+        cars = [car | cars]
+        loop(cars)
     end
   end
 
-  def calculate_answer do
-    42
-  end
 end
