@@ -5,7 +5,7 @@ defmodule Felix do
 
   def start do
     Felix.Server.start
-    SampleApp.ValueModel.start
+    SampleApp.CarModel.start
   end
 end
 

@@ -3,15 +3,12 @@ defmodule SampleApp.Router do
 
   alias Felix.Connection
 
-  # TODO: implement sample model, view, and controller
-  # TODO: the model could be a process
-  # # these changes involve understanding of project structure and good practices
   def match("GET", ["cars"], connection) do
-    SampleApp.ValueController.index(connection, [])
+    SampleApp.CarController.index(connection, [])
   end
 
   def match("POST", ["cars"], connection) do
-    SampleApp.ValueController.create(connection, [])
+    SampleApp.CarController.create(connection, [])
   end
 
   def match("GET", ["hello", name], connection) do
