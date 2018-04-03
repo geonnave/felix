@@ -1,23 +1,25 @@
 defmodule SampleApp.CarModel do
+  use GenServer
+
   def start do
     cars = ["Model S", "Model X", "Model 3"]
-    TOP.GenServer.start(__MODULE__, &handle_call/2, &handle_cast/2, cars)
+    GenServer.start(__MODULE__, cars, name: __MODULE__)
   end
 
   def get_cars do
-    TOP.GenServer.call __MODULE__, :get_cars
+    GenServer.call __MODULE__, :get_cars
   end
 
   def add_car(car) do
-    TOP.GenServer.cast __MODULE__, {:add_car, car}
+    GenServer.cast __MODULE__, {:add_car, car}
   end
 
-  def handle_call(:get_cars, cars) do
-    {cars, cars}
+  def handle_call(:get_cars, _from, cars) do
+    {:reply, cars, cars}
   end
 
   def handle_cast({:add_car, car}, cars) do
-    [car | cars]
+    {:noreply, [car | cars]}
   end
 end
 
