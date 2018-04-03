@@ -1,26 +1,14 @@
 defmodule SampleApp.BrandModel do
   def start do
-    brands = ["Tesla", "Ford"]
-
-    spawn(fn -> loop(brands) end)
-    |> Process.register(__MODULE__)
+    TOP.GenServer.start(__MODULE__, &handle_call/2, ["Tesla", "Ford"])
   end
 
   def get_brands do
-    send __MODULE__, {:get_brands, self()}
-
-    receive do
-      {:brands, brands} ->
-        brands
-    end
+    TOP.GenServer.call __MODULE__, :get_brands
   end
 
-  def loop(brands) do
-    receive do
-      {:get_brands, caller} ->
-        send(caller, {:brands, brands})
-        loop(brands)
-    end
+  def handle_call(:get_brands, state) do
+    {state, state}
   end
 end
 
