@@ -2,7 +2,8 @@ defmodule SampleApp.CarModel do
   def start do
     cars = ["Model S", "Model X", "Model 3"]
 
-    spawn(fn -> loop(cars) end) |> Process.register(__MODULE__)
+    spawn(fn -> loop(cars) end)
+    |> Process.register(__MODULE__)
   end
 
   def get_cars do
@@ -29,3 +30,4 @@ defmodule SampleApp.CarModel do
     end
   end
 end
+
