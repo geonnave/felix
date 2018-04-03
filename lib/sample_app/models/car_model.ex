@@ -1,33 +1,23 @@
 defmodule SampleApp.CarModel do
   def start do
     cars = ["Model S", "Model X", "Model 3"]
-
-    spawn(fn -> loop(cars) end)
-    |> Process.register(__MODULE__)
+    TOP.GenServer.start(__MODULE__, &handle_call/2, &handle_cast/2, cars)
   end
 
   def get_cars do
-    send __MODULE__, {:get_cars, self()}
-
-    receive do
-      {:cars, cars} ->
-        cars
-    end
+    TOP.GenServer.call __MODULE__, :get_cars
   end
 
   def add_car(car) do
-    send __MODULE__, {:add_car, car}
+    TOP.GenServer.cast __MODULE__, {:add_car, car}
   end
 
-  def loop(cars) do
-    receive do
-      {:get_cars, caller} ->
-        send(caller, {:cars, cars})
-        loop(cars)
-      {:add_car, car} ->
-        cars = [car | cars]
-        loop(cars)
-    end
+  def handle_call(:get_cars, cars) do
+    {cars, cars}
+  end
+
+  def handle_cast({:add_car, car}, cars) do
+    [car | cars]
   end
 end
 

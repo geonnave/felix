@@ -1,7 +1,7 @@
 defmodule TOP.GenServer do
-  def start(name, call_handler, initial_state) do
+  def start(name, call_handler, cast_handler, initial_state) do
 
-    spawn(fn -> loop(name, call_handler, initial_state) end)
+    spawn(fn -> loop(name, call_handler, cast_handler, initial_state) end)
     |> Process.register(name)
   end
 
@@ -14,12 +14,20 @@ defmodule TOP.GenServer do
     end
   end
 
-  def loop(name, call_handler, state) do
+  def cast(name, query) do
+    send name, {:cast, query}
+  end
+
+  def loop(name, call_handler, cast_handler, state) do
     receive do
       {:call, caller, query} ->
         {reply, new_state} = call_handler.(query, state)
         send(caller, {name, reply})
-        loop(name, call_handler, new_state)
+        loop(name, call_handler, cast_handler, new_state)
+
+      {:cast, query} ->
+        new_state = cast_handler.(query, state)
+        loop(name, call_handler, cast_handler, new_state)
     end
   end
 end
