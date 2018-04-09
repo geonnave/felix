@@ -1,9 +1,12 @@
 defmodule ForceApp.PeopleController do
   alias Felix.Connection
+  require EEx
+
+  EEx.function_from_file :defp, :template_list_people, "lib/force_app/templates/list_people.eex", [:people]
 
   def index(connection, _params) do
     people = ForceApp.People.list_people
-    page_contents = EEx.eval_file("lib/force_app/templates/list_people.eex", [people: people])
+    page_contents = template_list_people(people)
 
     %Connection{connection |
       status: "200 Ok",
@@ -12,7 +15,7 @@ defmodule ForceApp.PeopleController do
     }
   end
 
-  def create(connection = %{req_body: req_body}, _params) do
+  def create(connection, _params) do
     params =
       connection.req_body
       |> URI.decode_www_form
@@ -24,12 +27,6 @@ defmodule ForceApp.PeopleController do
     %Connection{connection |
       status: "303 See Other",
       resp_headers: [{"location", "/people"}],
-    }
-  end
-
-  def create(connection, _params) do
-    %Connection{connection |
-      status: "400 Bad Request",
     }
   end
 end
