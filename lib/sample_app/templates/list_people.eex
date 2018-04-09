@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css", rel="stylesheet">
+  <body>
+    <div class="container">
+      <h1>People Page</h1>
+
+      <form method="post">
+        <input type="text" placeholder="name" name="name">
+        <input type="text" placeholder="location" name="location">
+        <input type="submit" value="Add">
+      </form>
+
+      <hr>
+
+      <table>
+      <%= for {person, location} <- people do %>
+        <tr>
+          <td><%= person %></td><td><%= location %></td>
+        </tr>
+      <% end %>
+      </table>
+    </div>
+  </body>
+</html>

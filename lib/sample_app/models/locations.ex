@@ -1,45 +1,42 @@
-defmodule SampleApp.Locations do
+defmodule ForceApp.People do
   use GenServer
 
   def start do
-    locations = %{
-      "jose" => "Poland",
-      "joe" => "Sweden",
-      "gandalf" => "Middle Earth"
+    people = %{
+      "Luke" => "Tatooine",
+      "Han Solo" => "Corellia",
+      "Leia" => "Alderaan",
     }
 
-    GenServer.start(__MODULE__, locations, name: __MODULE__)
+    GenServer.start(__MODULE__, people, name: __MODULE__)
   end
 
   # API functions
 
-  def get_location(user) do
-    GenServer.call __MODULE__, {:get_location, user}
+  def list_people do
+    GenServer.call __MODULE__, :list_people
   end
 
-  def add_location(user, location) do
-    GenServer.cast __MODULE__, {:add_location, user, location}
+  def get_person(person) do
+    GenServer.call __MODULE__, {:get_person, person}
   end
 
-  # leave this as exercise
-  #def get_locations do
-  #  GenServer.call __MODULE__, :get_locations
-  #end
+  def add_person(person, location) do
+    GenServer.cast __MODULE__, {:add_person, person, location}
+  end
 
   # callback functions
 
-  def handle_call({:get_location, user}, _from, locations) do
-    {:reply, locations[user], locations}
+  def handle_call(:list_people, _from, people) do
+    {:reply, people, people}
   end
 
-  def handle_cast({:add_location, user, location}, locations) do
-    {:noreply, Map.put(locations, user, location)}
+  def handle_call({:get_person, person}, _from, people) do
+    {:reply, people[person], people}
   end
 
-  # leave this as exercise
-  #def handle_call(:get_locations, _from, locations) do
-  #  {:reply, locations, locations}
-  #end
-
+  def handle_cast({:add_person, person, location}, people) do
+    {:noreply, Map.put(people, person, location)}
+  end
 end
 
