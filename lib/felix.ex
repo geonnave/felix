@@ -5,8 +5,7 @@ defmodule Felix do
 
   def start do
     Felix.Server.start
-    SampleApp.CarModel.start
-    SampleApp.BrandModel.start
+    ForceApp.People.start
   end
 end
 

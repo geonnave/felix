@@ -6,14 +6,15 @@
       <h1>People Page</h1>
 
       <form method="post">
-        <input type="text" placeholder="name" name="name">
-        <input type="text" placeholder="location" name="location">
+        <input type="text" placeholder="name" name="name" required>
+        <input type="text" placeholder="location" name="location" required>
         <input type="submit" value="Add">
       </form>
 
       <hr>
 
       <table>
+        <tr><td>Person</td><td>Location</td></tr>
       <%= for {person, location} <- people do %>
         <tr>
           <td><%= person %></td><td><%= location %></td>
