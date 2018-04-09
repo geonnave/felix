@@ -3,10 +3,21 @@ defmodule ForceApp.PeopleController do
   require EEx
 
   EEx.function_from_file :defp, :template_list_people, "lib/force_app/templates/list_people.eex", [:people]
-
   def index(connection, _params) do
     people = ForceApp.People.list_people
     page_contents = template_list_people(people)
+
+    %Connection{connection |
+      status: "200 Ok",
+      resp_body: page_contents,
+      resp_headers: [{"content-type", "text/html"}],
+    }
+  end
+
+  EEx.function_from_file :defp, :template_show_person, "lib/force_app/templates/show_person.eex", [:person]
+  def show(connection, %{name: name}) do
+    person = ForceApp.People.get_person(name)
+    page_contents = template_show_person(person)
 
     %Connection{connection |
       status: "200 Ok",

@@ -7,6 +7,10 @@ defmodule SampleApp.Router do
     ForceApp.PeopleController.index(connection, [])
   end
 
+  def match("GET", ["people", name], connection) do
+    ForceApp.PeopleController.show(connection, %{name: name})
+  end
+
   def match("POST", ["people"], connection) do
     ForceApp.PeopleController.create(connection, [])
   end

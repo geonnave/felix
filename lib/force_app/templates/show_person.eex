@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css", rel="stylesheet">
+  <body>
+    <div class="container">
+      <h1><%= person %> Page</h1>
+    </div>
+  </body>
+</html>
+
