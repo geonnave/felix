@@ -1,14 +1,14 @@
 defmodule ForceApp.People do
   use GenServer
 
-  def start do
+  def start_link(_opts) do
     people = %{
       "Luke" => "Tatooine",
       "Han Solo" => "Corellia",
       "Leia" => "Alderaan"
     }
 
-    GenServer.start(__MODULE__, people, name: __MODULE__)
+    GenServer.start_link(__MODULE__, people, name: __MODULE__)
   end
 
   # API functions
@@ -26,6 +26,10 @@ defmodule ForceApp.People do
   end
 
   # callback functions
+
+  def init(people) do
+    {:ok, people}
+  end
 
   def handle_call(:list_people, _from, people) do
     {:reply, people, people}
