@@ -39,4 +39,3 @@ defmodule ForceApp.People do
     {:noreply, Map.put(people, person, location)}
   end
 end
-

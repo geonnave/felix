@@ -8,4 +8,3 @@ defmodule Felix do
     ForceApp.People.start
   end
 end
-

@@ -14,10 +14,10 @@
       <hr>
 
       <table>
-        <tr><td>Person</td><td>Location</td></tr>
+        <tr><th>Person</th><th>Location</th></tr>
       <%= for {person, location} <- people do %>
         <tr>
-          <td><%= person %></td><td><%= location %></td>
+          <td><a href="/people/<%= person %>"><%= person %></td><td><%= location %></a></td>
         </tr>
       <% end %>
       </table>

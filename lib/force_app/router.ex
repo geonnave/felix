@@ -1,6 +1,5 @@
 defmodule SampleApp.Router do
   use Felix.Router
-
   alias Felix.Connection
 
   def match("GET", ["people"], connection) do
@@ -8,7 +7,7 @@ defmodule SampleApp.Router do
   end
 
   def match("GET", ["people", name], connection) do
-    ForceApp.PeopleController.show(connection, %{name: name})
+    ForceApp.PeopleController.show(connection, %{name: URI.decode_www_form(name)})
   end
 
   def match("POST", ["people"], connection) do
@@ -21,6 +20,4 @@ defmodule SampleApp.Router do
       status: "404 Not Found"
     }
   end
-
 end
-

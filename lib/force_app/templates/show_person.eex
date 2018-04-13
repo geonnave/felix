@@ -4,7 +4,7 @@
   <body>
     <div class="container">
       <h1><%= person %> Page</h1>
+      <p>This persons lives at <%= location %></p>
     </div>
   </body>
 </html>
-

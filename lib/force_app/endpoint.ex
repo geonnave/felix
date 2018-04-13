@@ -18,4 +18,3 @@ defmodule SampleApp.Endpoint do
     ]
   end
 end
-
