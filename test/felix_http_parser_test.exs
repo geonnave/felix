@@ -29,6 +29,7 @@ defmodule FelixHTTPParserTest do
     Location: localhost:2222\r
     \r
     """
+
     assert %Connection{req_headers: [{"Location", "localhost:2222"}]} = HTTPParser.parse(request)
 
     request = """
@@ -37,6 +38,7 @@ defmodule FelixHTTPParserTest do
     Accept: text/html\r
     \r
     """
+
     assert %Connection{req_headers: headers} = HTTPParser.parse(request)
     assert {"Location", "localhost:2222"} in headers
     assert {"Accept", "text/html"} in headers
@@ -48,17 +50,22 @@ defmodule FelixHTTPParserTest do
     \r
     {"value": 3.14}
     """
-    assert %Connection{req_headers: headers, req_body: "{\"value\": 3.14}\n"} = HTTPParser.parse(request)
+
+    assert %Connection{req_headers: headers, req_body: "{\"value\": 3.14}\n"} =
+             HTTPParser.parse(request)
+
     assert length(headers) == 2
   end
 
   test "raise on badly-formed requests" do
     request = "GET /value"
+
     assert_raise HTTPParser.RequestFormatError, fn ->
       HTTPParser.parse(request)
     end
 
     request = "GREET /value HTTP/1.1"
+
     assert_raise HTTPParser.RequestFormatError, fn ->
       HTTPParser.parse(request)
     end
@@ -78,6 +85,4 @@ defmodule FelixHTTPParserTest do
     assert {headers, "{\"value\": 3.14}"} = HTTPParser.parse_headers_and_payload(headers)
     assert length(headers) == 2
   end
-
 end
-

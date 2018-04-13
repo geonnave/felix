@@ -15,9 +15,6 @@ defmodule SampleApp.Router do
   end
 
   def match(method, path, connection) do
-    %Connection{connection |
-      resp_body: "#{method} #{path} not found",
-      status: "404 Not Found"
-    }
+    %Connection{connection | resp_body: "#{method} #{path} not found", status: "404 Not Found"}
   end
 end

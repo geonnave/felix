@@ -5,7 +5,7 @@ defmodule ForceApp.People do
     people = %{
       "Luke" => "Tatooine",
       "Han Solo" => "Corellia",
-      "Leia" => "Alderaan",
+      "Leia" => "Alderaan"
     }
 
     GenServer.start(__MODULE__, people, name: __MODULE__)
@@ -14,15 +14,15 @@ defmodule ForceApp.People do
   # API functions
 
   def list_people do
-    GenServer.call __MODULE__, :list_people
+    GenServer.call(__MODULE__, :list_people)
   end
 
   def get_person(person) do
-    GenServer.call __MODULE__, {:get_person, person}
+    GenServer.call(__MODULE__, {:get_person, person})
   end
 
   def add_person(person, location) do
-    GenServer.cast __MODULE__, {:add_person, person, location}
+    GenServer.cast(__MODULE__, {:add_person, person, location})
   end
 
   # callback functions

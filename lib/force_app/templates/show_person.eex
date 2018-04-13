@@ -4,7 +4,9 @@
   <body>
     <div class="container">
       <h1><%= person %> Page</h1>
-      <p>This persons lives at <%= location %></p>
+      <p>This person lives at <%= location %></p>
+      <hr>
+      <a href="/people" class="button">Voltar<a>
     </div>
   </body>
 </html>

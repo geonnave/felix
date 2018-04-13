@@ -9,6 +9,4 @@ defmodule Felix.Handler do
     |> endpoint.call()
     |> Felix.HTTPSerializer.serialize()
   end
-
 end
-

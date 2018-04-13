@@ -14,6 +14,4 @@ defmodule FelixHTTPSerializerTest do
     connection = %Connection{status: "200 Ok", resp_body: "hola que tal"}
     assert ^response = HTTPSerializer.serialize(connection)
   end
-
 end
-

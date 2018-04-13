@@ -4,7 +4,7 @@ defmodule Felix do
   """
 
   def start do
-    Felix.Server.start
-    ForceApp.People.start
+    Felix.Server.start()
+    ForceApp.People.start()
   end
 end

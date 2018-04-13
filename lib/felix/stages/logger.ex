@@ -6,6 +6,7 @@ defmodule Felix.Stages.Logger do
     case assigns do
       %{request_id: rid} ->
         Logger.info("[#{rid}] #{m} at #{inspect(p)}")
+
       _ ->
         Logger.info("#{m} at #{inspect(p)}")
     end
@@ -13,4 +14,3 @@ defmodule Felix.Stages.Logger do
     connection
   end
 end
-

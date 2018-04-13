@@ -6,4 +6,3 @@ defmodule Felix.Stages.RequestId do
     %Connection{connection | assigns: assigns}
   end
 end
-

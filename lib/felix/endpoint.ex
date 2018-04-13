@@ -13,4 +13,3 @@ defmodule Felix.Endpoint do
     end
   end
 end
-

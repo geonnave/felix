@@ -18,6 +18,7 @@ defmodule Felix.HTTPParser do
           req_headers: headers,
           req_body: payload
         }
+
       _ ->
         raise RequestFormatError, message: "invalid request format: #{inspect(request)}"
     end
@@ -30,9 +31,11 @@ defmodule Felix.HTTPParser do
   def parse_headers("\r\n", headers) do
     {headers, nil}
   end
+
   def parse_headers("\r\n" <> payload, headers) do
     {headers, payload}
   end
+
   def parse_headers(string_headers, headers) do
     [header_line, rest] = String.split(string_headers, "\r\n", parts: 2)
     [header, value] = String.split(header_line, ": ")
@@ -43,5 +46,4 @@ defmodule Felix.HTTPParser do
   def parse_path(path) do
     String.split(path, "/", trim: true)
   end
-
 end
