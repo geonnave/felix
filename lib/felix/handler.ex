@@ -2,11 +2,13 @@ defmodule Felix.Handler do
   require Logger
 
   def handle(request) do
-    endpoint = Application.get_env(:felix, :app_endpoint)
+    router = Application.get_env(:felix, :app_router)
 
     request
     |> Felix.HTTPParser.parse()
-    |> endpoint.call()
+    |> Felix.Stages.Logger.call()
+    |> Felix.Stages.RequestId.call()
+    |> router.call()
     |> Felix.HTTPSerializer.serialize()
   end
 end

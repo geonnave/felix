@@ -2,16 +2,9 @@ defmodule ForceApp.PeopleController do
   alias Felix.Connection
   require EEx
 
-  EEx.function_from_file(
-    :defp,
-    :template_list_people,
-    "lib/force_app/templates/list_people.eex",
-    [:people]
-  )
-
   def index(connection, _params) do
     people = ForceApp.People.list_people()
-    page_contents = template_list_people(people)
+    page_contents = EEx.eval_file("lib/force_app/templates/list_people.eex", people: people)
 
     %Connection{
       connection
@@ -21,16 +14,10 @@ defmodule ForceApp.PeopleController do
     }
   end
 
-  EEx.function_from_file(
-    :defp,
-    :template_show_person,
-    "lib/force_app/templates/show_person.eex",
-    [:person, :location]
-  )
-
   def show(connection, %{name: name}) do
     location = ForceApp.People.get_person(name)
-    page_contents = template_show_person(name, location)
+    page_contents =
+      EEx.eval_file("lib/force_app/templates/show_person.eex", person: name, location: location)
 
     %Connection{
       connection

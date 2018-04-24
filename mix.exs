@@ -15,7 +15,7 @@ defmodule Felix.Mixfile do
   def application do
     [
       extra_applications: [:logger],
-      mod: {Felix.Application, []},
+      mod: {Felix.Application, []}
     ]
   end
 

@@ -7,7 +7,7 @@ defmodule Felix.Application do
     children = [
       {Felix.Server, 2222},
       {Task.Supervisor, name: Felix.Handler.TaskSupervisor},
-      {ForceApp.People, []},
+      {ForceApp.People, []}
     ]
 
     Supervisor.start_link(children, strategy: :one_for_one)

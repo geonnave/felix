@@ -8,6 +8,9 @@ defmodule FelixHTTPParserTest do
     request = "GET /value HTTP/1.1\r\n\r\n"
     assert %Connection{method: "GET", path_info: ["value"]} = HTTPParser.parse(request)
 
+    request = "GET /value HTTP/1.1\r\n\r\nblah"
+    assert %Connection{method: "GET", path_info: ["value"]} = HTTPParser.parse(request)
+
     request = "GET /value HTTP/1.1\r\nAccpet: application/json\r\n\r\n"
     assert %Connection{method: "GET", path_info: ["value"]} = HTTPParser.parse(request)
   end
@@ -57,32 +60,13 @@ defmodule FelixHTTPParserTest do
     assert length(headers) == 2
   end
 
-  test "raise on badly-formed requests" do
-    request = "GET /value"
+  test "parse headers" do
+    headers = "Location: localhost:2222"
+    assert [{"Location", "localhost:2222"}] = HTTPParser.parse_headers(headers)
 
-    assert_raise HTTPParser.RequestFormatError, fn ->
-      HTTPParser.parse(request)
-    end
-
-    request = "GREET /value HTTP/1.1"
-
-    assert_raise HTTPParser.RequestFormatError, fn ->
-      HTTPParser.parse(request)
-    end
-  end
-
-  test "parse headers and body" do
-    headers = "Location: localhost:2222\r\n\r\n"
-    assert {headers, nil} = HTTPParser.parse_headers_and_payload(headers)
-    assert {"Location", "localhost:2222"} in headers
-
-    headers = "Location: localhost:2222\r\nAccept: text/html\r\n\r\n"
-    assert {headers, nil} = HTTPParser.parse_headers_and_payload(headers)
+    headers = "Location: localhost:2222\r\nAccept: text/html"
+    headers = HTTPParser.parse_headers(headers)
     assert {"Location", "localhost:2222"} in headers
     assert {"Accept", "text/html"} in headers
-
-    headers = "Location: localhost:2222\r\nAccept: text/html\r\n\r\n{\"value\": 3.14}"
-    assert {headers, "{\"value\": 3.14}"} = HTTPParser.parse_headers_and_payload(headers)
-    assert length(headers) == 2
   end
 end

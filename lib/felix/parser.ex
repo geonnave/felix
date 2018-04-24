@@ -1,46 +1,44 @@
 defmodule Felix.HTTPParser do
-  defmodule RequestFormatError do
-    defexception [:message]
-  end
-
   alias Felix.Connection
 
-  @allowed_methods ~w(GET POST PUT DELETE OPTIONS)
-
   def parse(request) do
-    case String.split(request, " ", parts: 3) do
-      [method, path, "HTTP/1.1\r\n" <> rest] when method in @allowed_methods ->
-        {headers, payload} = parse_headers_and_payload(rest)
+    [method, path, "HTTP/1.1" <> rest] = String.split(request, " ", parts: 3)
+    {raw_headers, body} = separate_headers_and_body(rest)
 
-        %Connection{
-          method: method,
-          path_info: parse_path(path),
-          req_headers: headers,
-          req_body: payload
-        }
+    %Connection{
+      method: method,
+      path_info: parse_path(path),
+      req_headers: parse_headers(raw_headers),
+      req_body: body
+    }
+  end
 
-      _ ->
-        raise RequestFormatError, message: "invalid request format: #{inspect(request)}"
+  def separate_headers_and_body("\r\n\r\n") do
+    {"", nil}
+  end
+
+  def separate_headers_and_body("\r\n\r\n" <> payload) do
+    {"", payload}
+  end
+
+  def separate_headers_and_body(headers_and_body) do
+    ["\r\n" <> raw_headers, body] = String.split(headers_and_body, "\r\n\r\n")
+
+    {raw_headers, body}
+  end
+
+  def parse_headers(""), do: []
+
+  def parse_headers(raw_headers) do
+    case String.split(raw_headers, "\r\n", parts: 2) do
+      [header_line, rest] ->
+        [header, value] = String.split(header_line, ": ")
+        [{header, value} | parse_headers(rest)]
+
+      [header_line] ->
+        [header, value] = String.split(header_line, ": ")
+        [{header, value}]
     end
-  end
-
-  def parse_headers_and_payload(string_headers) do
-    parse_headers(string_headers, [])
-  end
-
-  def parse_headers("\r\n", headers) do
-    {headers, nil}
-  end
-
-  def parse_headers("\r\n" <> payload, headers) do
-    {headers, payload}
-  end
-
-  def parse_headers(string_headers, headers) do
-    [header_line, rest] = String.split(string_headers, "\r\n", parts: 2)
-    [header, value] = String.split(header_line, ": ")
-
-    parse_headers(rest, [{header, value} | headers])
   end
 
   def parse_path(path) do
