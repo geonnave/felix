@@ -1,6 +1,9 @@
 defmodule SampleApp.Router do
-  use Felix.Router
   alias Felix.Connection
+
+  def call(connection = %{method: method, path_info: path}) do
+    match(method, path, connection)
+  end
 
   def match("GET", ["people"], connection) do
     ForceApp.PeopleController.index(connection, [])

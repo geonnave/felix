@@ -18,13 +18,14 @@ defmodule Felix.Server do
   def loop_acceptor(socket) do
     {:ok, client} = :gen_tcp.accept(socket)
 
-    {:ok, pid} = Task.Supervisor.start_child(Felix.Handler.TaskSupervisor, fn ->
-      # Process.sleep(3000)
-      client
-      |> receive_request()
-      |> Felix.Handler.handle()
-      |> send_response(client)
-    end)
+    {:ok, pid} =
+      Task.Supervisor.start_child(Felix.Handler.TaskSupervisor, fn ->
+        client
+        |> receive_request()
+        |> Felix.Handler.handle()
+        |> send_response(client)
+      end)
+
     :gen_tcp.controlling_process(client, pid)
 
     loop_acceptor(socket)
