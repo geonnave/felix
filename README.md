@@ -1,4 +1,4 @@
-# ElixServer
+# Felix
 
 **TODO: Add description**
 
@@ -17,5 +17,5 @@ end
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/elix_server](https://hexdocs.pm/elix_server).
+be found at [https://hexdocs.pm/felix](https://hexdocs.pm/felix).
 

@@ -1,24 +1,32 @@
-defmodule ElixServer do
+defmodule Felix.Server do
+  use Task
   require Logger
 
   @tcp_options [:binary, active: false, reuseaddr: true]
 
-  def start(port \\ 2222) do
-    {:ok, socket} = :gen_tcp.listen(port, @tcp_options)
+  def start_link(port) do
+    Task.start_link(__MODULE__, :run, [port])
+  end
 
+  def run(port) do
+    {:ok, socket} = :gen_tcp.listen(port, @tcp_options)
     Logger.info("Accepting connections on port #{port}")
+
     loop_acceptor(socket)
   end
 
-  # TODO: make handler configurable, depending on mix env
-  # # this change involve understanding configuration (and dependency injection)
   def loop_acceptor(socket) do
     {:ok, client} = :gen_tcp.accept(socket)
 
-    client
-    |> receive_request()
-    |> Handler.handle()
-    |> send_response(client)
+    {:ok, pid} =
+      Task.Supervisor.start_child(Felix.Handler.TaskSupervisor, fn ->
+        client
+        |> receive_request()
+        |> Felix.Handler.handle()
+        |> send_response(client)
+      end)
+
+    :gen_tcp.controlling_process(client, pid)
 
     loop_acceptor(socket)
   end
@@ -34,6 +42,4 @@ defmodule ElixServer do
     :gen_tcp.send(client, response)
     :gen_tcp.close(client)
   end
-
 end
-
