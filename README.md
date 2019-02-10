@@ -2,7 +2,7 @@
 
 Felix é um web framework educativo escrito em Elixir e baseado no Phoenix.
 
-Algumas features:
+Algumas das features são:
 
 * Servidor TCP com conexões concorrentes e um `supervisor`
 * Parser e serializer (parciais) de requisições HTTP
@@ -20,7 +20,7 @@ no código.
 
 Felix is an educational, Phoenix-inspired, web framework written in Elixir.
 
-Some features:
+Here are some of its features:
 
 * TCP server with concurrent connections and a `supervisor`
 * Partial HTTP parser and serializer
