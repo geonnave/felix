@@ -2,12 +2,12 @@
 
 Felix é um web framework educativo escrito em Elixir e baseado no Phoenix.
 
-Algumas das features são:
+Entre suas principais funcionalidades, estão:
 
 * Servidor TCP com conexões concorrentes e um `supervisor`
 * Parser e serializer (parciais) de requisições HTTP
 * A ideia de *stages*, reproduzindo a ideia de `plugs`
-* Um router, novamente inspirado no homônimo oferecido pela biblioteca `plug`
+* Um `router`, novamente inspirado no homônimo oferecido pela biblioteca `plug`
 * `TOP.GenServer`, um GenServer simplificado para fins educacionais
 * Uma aplicação de exemplo, `force_app`, demonstrando como usar o Felix
 
@@ -25,7 +25,7 @@ Here are some of its features:
 * TCP server with concurrent connections and a `supervisor`
 * Partial HTTP parser and serializer
 * The concept of *stages*, very similar to `plugs`
-* A router, again inspired in the `plug` library
+* A `router`, again inspired by the `plug` library
 * `TOP.GenServer`, a simplified GenServer for educational purposes
 * `force_app`, an application that demonstrates how to use Felix
 
