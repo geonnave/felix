@@ -20,10 +20,11 @@ defmodule Felix.Server do
 
     {:ok, pid} =
       Task.Supervisor.start_child(Felix.Handler.TaskSupervisor, fn ->
-        client
-        |> receive_request()
-        |> Felix.Handler.handle()
-        |> send_response(client)
+        if request = receive_request(client) do
+          request
+          |> Felix.Handler.handle()
+          |> send_response(client)
+        end
       end)
 
     :gen_tcp.controlling_process(client, pid)
@@ -32,9 +33,13 @@ defmodule Felix.Server do
   end
 
   def receive_request(client) do
-    {:ok, request} = :gen_tcp.recv(client, 0)
-    Logger.info("Received #{inspect(request)}")
-    request
+    case :gen_tcp.recv(client, 0) do
+      {:ok, request} ->
+        Logger.info("Received #{inspect(request)}")
+        request
+      _ ->
+        nil
+    end
   end
 
   def send_response(response, client) do
